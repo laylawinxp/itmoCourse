@@ -15,6 +15,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    testImplementation("org.slf4j:slf4j-simple:2.0.9")
+
     testImplementation("com.codeborne:selenide:7.2.2")
 }
 
