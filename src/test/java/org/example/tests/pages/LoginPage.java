@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Condition.partialText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.WebDriverRunner.url;
 
 public class LoginPage {
     private final SelenideElement usernameInput = $("[data-test=username]");
@@ -25,6 +26,7 @@ public class LoginPage {
     }
 
     public InventoryPage shouldBeLoggedIn() {
+        Selenide.Wait().until(driver -> url().contains("inventory.html"));
         title.shouldHave(com.codeborne.selenide.Condition.text("Products"));
         return new InventoryPage();
     }
