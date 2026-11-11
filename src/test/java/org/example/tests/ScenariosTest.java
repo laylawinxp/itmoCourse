@@ -23,7 +23,7 @@ public class ScenariosTest extends BaseTest {
     void userCannotLoginWithWrongPassword() {
         LoginPage.open()
                 .loginAs("standard_user", "wrong_password")
-                .checkErrorMessage("Username and password do not match");
+                .checkErrorMessage("Epic sadface: Username and password do not match any user in this service");
     }
 
     @Test
@@ -31,7 +31,7 @@ public class ScenariosTest extends BaseTest {
     void lockedOutUserCannotLogin() {
         LoginPage.open()
                 .loginAs("locked_out_user", "secret_sauce")
-                .checkErrorMessage("Sorry, this user has been locked out.");
+                .checkErrorMessage("Epic sadface: Sorry, this user has been locked out.");
     }
 
     @Test

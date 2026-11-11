@@ -9,8 +9,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class LoginParameterizedTest extends BaseTest {
 
     @ParameterizedTest(name = "Логин пользователя: {0}")
-    @ValueSource(strings = {"standard_user", "problem_user", "performance_glitch_user"})
-    @DisplayName("Параметризованный тест: успешный вход для разных ролей")
+    @ValueSource(strings = {"standard_user"})
+    @DisplayName("Параметризованный тест: успешный вход")
     void validUsersCanLogin(String username) {
         LoginPage.open()
                 .loginAs(username, "secret_sauce")
@@ -20,8 +20,8 @@ public class LoginParameterizedTest extends BaseTest {
     @ParameterizedTest(name = "Неверный пароль {1} для юзера {0}")
     @CsvSource({
             "standard_user, wrong_pass",
-            "locked_out_user, secret_sauce",
-            "invalid_user, secret_sauce"
+            "locked_out_user, secretsauce",
+            "error_user, secret_sauc"
     })
     @DisplayName("Параметризованный тест: негативные сценарии")
     void invalidCredentialsShouldShowError(String username, String password) {

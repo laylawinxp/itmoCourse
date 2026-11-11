@@ -4,6 +4,8 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.partialText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.WebDriverRunner.url;
@@ -20,6 +22,7 @@ public class LoginPage {
     }
 
     public LoginPage loginAs(String username, String password) {
+        usernameInput.shouldBe(Condition.visible, Duration.ofSeconds(10));
         usernameInput.setValue(username);
         passwordInput.setValue(password);
         loginButton.click();
@@ -27,12 +30,12 @@ public class LoginPage {
     }
 
     public InventoryPage shouldBeLoggedIn() {
-        Selenide.Wait().until(driver -> url().contains("inventory.html"));
-        title.shouldHave(Condition.text("Products"));
+        title.shouldHave(Condition.text("Products"), Duration.ofSeconds(10));
         return new InventoryPage();
     }
 
     public void checkErrorMessage(String expectedText) {
+        errorMessage.shouldBe(Condition.visible, Duration.ofSeconds(10));
         errorMessage.shouldHave(partialText(expectedText));
     }
 

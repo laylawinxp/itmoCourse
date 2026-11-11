@@ -17,7 +17,7 @@ public class InventoryDynamicTest extends BaseTest {
     @TestFactory
     @DisplayName("Динамические тесты: Проверка карточек товаров")
     Stream<DynamicTest> checkAllProductCards() {
-        LoginPage.open().loginAs("standard_user", "secret_sauce");
+        LoginPage.open().loginAs("standard_user", "secret_sauce").shouldBeLoggedIn();
 
         List<String> productNames = Selenide.$$(".inventory_item_name").texts();
 

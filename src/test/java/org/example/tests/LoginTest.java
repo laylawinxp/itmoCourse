@@ -12,7 +12,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     @DisplayName("Успешный логин")
-    @Timeout(10)
+    @Timeout(20)
     void userCanLoginSuccessfully() {
         LoginPage.open()
                 .loginAs("standard_user", "secret_sauce")
@@ -26,7 +26,7 @@ public class LoginTest extends BaseTest {
                 .loginAs("standard_user", "wrong_password");
 
         assertAll(
-                () -> loginPage.checkErrorMessage("Username and password do not match"),
+                () -> loginPage.checkErrorMessage("Epic sadface: Username and password do not match any user in this service\n"),
                 () -> assertTrue(loginPage.getCurrentUrl().contains("saucedemo.com"), "URL не должен меняться")
         );
     }

@@ -48,7 +48,7 @@ public class CartNestedTest extends BaseTest {
         void removeItem() {
             inventoryPage.addToCart("Sauce Labs Backpack")
                     .removeFromCart("Sauce Labs Backpack")
-                    .checkCartCount("0");
+                    .checkCartIsEmpty();
         }
     }
 }
