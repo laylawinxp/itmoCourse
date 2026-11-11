@@ -1,5 +1,6 @@
 package org.example.tests.pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.example.tests.components.ProductCard;
@@ -13,13 +14,19 @@ public class InventoryPage {
     private final SelenideElement cartLink = $(".shopping_cart_link");
 
     public InventoryPage addToCart(String productName) {
-        new ProductCard(cards.findBy(com.codeborne.selenide.Condition.text(productName)))
+        new ProductCard(cards.findBy(Condition.text(productName)))
                 .addToCart();
         return this;
     }
 
+    public InventoryPage removeFromCart(String productName) {
+        SelenideElement card = cards.findBy(Condition.text(productName));
+        card.$("button").shouldHave(Condition.text("Remove")).click();
+        return this;
+    }
+
     public InventoryPage checkCartCount(String expectedCount) {
-        cartBadge.shouldHave(com.codeborne.selenide.Condition.text(expectedCount));
+        cartBadge.shouldHave(Condition.text(expectedCount));
         return this;
     }
 

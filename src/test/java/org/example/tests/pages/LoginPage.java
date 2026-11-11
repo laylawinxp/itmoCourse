@@ -1,5 +1,6 @@
 package org.example.tests.pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
@@ -27,11 +28,15 @@ public class LoginPage {
 
     public InventoryPage shouldBeLoggedIn() {
         Selenide.Wait().until(driver -> url().contains("inventory.html"));
-        title.shouldHave(com.codeborne.selenide.Condition.text("Products"));
+        title.shouldHave(Condition.text("Products"));
         return new InventoryPage();
     }
 
     public void checkErrorMessage(String expectedText) {
         errorMessage.shouldHave(partialText(expectedText));
+    }
+
+    public String getCurrentUrl() {
+        return url();
     }
 }
