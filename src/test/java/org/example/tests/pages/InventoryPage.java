@@ -11,9 +11,9 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class InventoryPage implements Loadable<InventoryPage> {
-    private final ElementsCollection cards = $$(".inventory_item");
-    private final SelenideElement cartBadge = $(".shopping_cart_badge");
-    private final SelenideElement cartLink = $(".shopping_cart_link");
+    private final ElementsCollection cards     = $$("[data-test='inventory-item']");
+    private final SelenideElement    cartBadge = $("[data-test='shopping-cart-badge']");
+    private final SelenideElement    cartLink  = $("[data-test='shopping-cart-link']");
 
     @Override
     public InventoryPage isLoaded() {

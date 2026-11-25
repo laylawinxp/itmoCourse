@@ -12,11 +12,11 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.WebDriverRunner.url;
 
 public class LoginPage implements Loadable<LoginPage> {
-    private final SelenideElement usernameInput = $("[data-test=username]");
-    private final SelenideElement passwordInput = $("[data-test=password]");
-    private final SelenideElement loginButton = $("[data-test=login-button]");
-    private final SelenideElement title = $("[data-test=title]");
-    private final SelenideElement errorMessage = $("[data-test=error]");
+    private final SelenideElement usernameInput = $("[data-test='username']");
+    private final SelenideElement passwordInput = $("[data-test='password']");
+    private final SelenideElement loginButton   = $("[data-test='login-button']");
+    private final SelenideElement title         = $("[data-test='title']");
+    private final SelenideElement errorMessage  = $("[data-test='error']");
 
     public static LoginPage open() {
         Selenide.open("/");
@@ -41,9 +41,10 @@ public class LoginPage implements Loadable<LoginPage> {
         return new InventoryPage();
     }
 
-    public void checkErrorMessage(String expectedText) {
+    public LoginPage checkErrorMessage(String expectedText) {
         errorMessage.shouldBe(Condition.visible, Duration.ofSeconds(10));
         errorMessage.shouldHave(partialText(expectedText));
+        return this;
     }
 
     public String getCurrentUrl() {

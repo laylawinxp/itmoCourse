@@ -15,35 +15,29 @@ public class ProductCard {
         this.productName = productName;
     }
 
-    private String slug() {
-        return productName.toLowerCase()
-                .replace(" ", "-")
-                .replaceAll("[^a-z0-9-]", "");
-    }
-
-    public SelenideElement root() {
-        return $x("//div[@class='inventory_item'][.//div[@class='inventory_item_name' and normalize-space()='"
-                + productName + "']]")
+    private SelenideElement cardRoot() {
+        return $x(".//div[@data-test='inventory-item']" +
+                "[.//div[@data-test='inventory-item-name' and normalize-space()='" + productName + "']]")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
     public String getTitle() {
-        return root().$(".inventory_item_name").getText();
+        return cardRoot().$x(".//div[@data-test='inventory-item-name']").getText();
     }
 
     public void addToCart() {
-        $("button[data-test='add-to-cart-" + slug() + "']")
+        cardRoot().$x(".//button[starts-with(@data-test,'add-to-cart')]")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10))
                 .click();
-        $("button[data-test='remove-" + slug() + "']")
+        cardRoot().$x(".//button[starts-with(@data-test,'remove')]")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
     public void removeFromCart() {
-        $("button[data-test='remove-" + slug() + "']")
+        cardRoot().$x(".//button[starts-with(@data-test,'remove')]")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10))
                 .click();
-        $("button[data-test='add-to-cart-" + slug() + "']")
+        cardRoot().$x(".//button[starts-with(@data-test,'add-to-cart')]")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 }

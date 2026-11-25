@@ -1,15 +1,28 @@
 package org.example.tests.pages;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Selenide.$$;
+import java.time.Duration;
 
-public class CartPage {
-    private final ElementsCollection cartItems = $$(".cart_item");
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
+
+public class CartPage implements Loadable<CartPage> {
+    private final SelenideElement title    = $("[data-test='title']");
+    private final SelenideElement cartList = $("[data-test='cart-list']");
+
+    @Override
+    public CartPage isLoaded() {
+        title.shouldHave(Condition.text("Your Cart"), Duration.ofSeconds(10));
+        cartList.shouldBe(Condition.visible, Duration.ofSeconds(10));
+        return this;
+    }
 
     public CartPage shouldContainProduct(String productName) {
-        cartItems.findBy(Condition.text(productName)).shouldBe(Condition.visible);
+        $x(".//div[@data-test='cart-list']" +
+                "//div[@data-test='inventory-item-name' and normalize-space()='" + productName + "']")
+                .shouldBe(Condition.visible, Duration.ofSeconds(10));
         return this;
     }
 }
