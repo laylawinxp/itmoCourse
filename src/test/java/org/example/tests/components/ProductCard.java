@@ -5,7 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class ProductCard {
     private final String productName;
@@ -14,9 +15,15 @@ public class ProductCard {
         this.productName = productName;
     }
 
-    private SelenideElement root() {
-        return $$(".inventory_item")
-                .findBy(Condition.text(productName))
+    private String slug() {
+        return productName.toLowerCase()
+                .replace(" ", "-")
+                .replaceAll("[^a-z0-9-]", "");
+    }
+
+    public SelenideElement root() {
+        return $x("//div[@class='inventory_item'][.//div[@class='inventory_item_name' and normalize-space()='"
+                + productName + "']]")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
@@ -25,18 +32,18 @@ public class ProductCard {
     }
 
     public void addToCart() {
-        root().$("button[data-test^='add-to-cart']")
+        $("button[data-test='add-to-cart-" + slug() + "']")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10))
                 .click();
-        root().$("button[data-test^='remove']")
+        $("button[data-test='remove-" + slug() + "']")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
     public void removeFromCart() {
-        root().$("button[data-test^='remove']")
+        $("button[data-test='remove-" + slug() + "']")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10))
                 .click();
-        root().$("button[data-test^='add-to-cart']")
+        $("button[data-test='add-to-cart-" + slug() + "']")
                 .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 }
