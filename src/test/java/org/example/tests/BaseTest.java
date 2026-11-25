@@ -12,7 +12,7 @@ public abstract class BaseTest {
         Configuration.baseUrl = "https://www.saucedemo.com";
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 10000;
+        Configuration.timeout = 30000;
         Configuration.headless = false;
         Configuration.browserCapabilities.setCapability("goog:chromeOptions",
                 java.util.Map.of("args", java.util.List.of(
@@ -28,5 +28,6 @@ public abstract class BaseTest {
     void tearDown() {
         Selenide.clearBrowserCookies();
         Selenide.clearBrowserLocalStorage();
+        Selenide.closeWebDriver();
     }
 }

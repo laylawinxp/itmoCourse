@@ -5,28 +5,38 @@ import com.codeborne.selenide.SelenideElement;
 
 import java.time.Duration;
 
-public class ProductCard {
-    private final SelenideElement root;
-    private final SelenideElement titleElement;
-    private final SelenideElement addToCartButton;
-    private final SelenideElement removeButton;
+import static com.codeborne.selenide.Selenide.$$;
 
-    public ProductCard(SelenideElement root) {
-        this.root = root;
-        this.titleElement = root.$(".inventory_item_name");
-        this.addToCartButton = root.$("button[data-test^='add-to-cart']");
-        this.removeButton = root.$("button[data-test^='remove']");
+public class ProductCard {
+    private final String productName;
+
+    public ProductCard(String productName) {
+        this.productName = productName;
+    }
+
+    private SelenideElement root() {
+        return $$(".inventory_item")
+                .findBy(Condition.text(productName))
+                .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
     public String getTitle() {
-        return titleElement.getText();
+        return root().$(".inventory_item_name").getText();
     }
 
     public void addToCart() {
-        addToCartButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
+        root().$("button[data-test^='add-to-cart']")
+                .shouldBe(Condition.visible, Duration.ofSeconds(10))
+                .click();
+        root().$("button[data-test^='remove']")
+                .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 
     public void removeFromCart() {
-        removeButton.shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
+        root().$("button[data-test^='remove']")
+                .shouldBe(Condition.visible, Duration.ofSeconds(10))
+                .click();
+        root().$("button[data-test^='add-to-cart']")
+                .shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
 }

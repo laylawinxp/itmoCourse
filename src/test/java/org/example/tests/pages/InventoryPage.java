@@ -10,22 +10,24 @@ import java.time.Duration;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class InventoryPage {
+public class InventoryPage implements Loadable<InventoryPage> {
     private final ElementsCollection cards = $$(".inventory_item");
     private final SelenideElement cartBadge = $(".shopping_cart_badge");
     private final SelenideElement cartLink = $(".shopping_cart_link");
 
+    @Override
+    public InventoryPage isLoaded() {
+        cards.first().shouldBe(Condition.visible, Duration.ofSeconds(15));
+        return this;
+    }
+
     public InventoryPage addToCart(String productName) {
-        cards.first().shouldBe(Condition.visible, Duration.ofSeconds(10));
-        new ProductCard(cards.findBy(Condition.text(productName)))
-                .addToCart();
+        new ProductCard(productName).addToCart();
         return this;
     }
 
     public InventoryPage removeFromCart(String productName) {
-        cards.first().shouldBe(Condition.visible, Duration.ofSeconds(10));
-        new ProductCard(cards.findBy(Condition.text(productName)))
-                .removeFromCart();
+        new ProductCard(productName).removeFromCart();
         return this;
     }
 
@@ -35,7 +37,7 @@ public class InventoryPage {
     }
 
     public InventoryPage checkCartIsEmpty() {
-        cartBadge.shouldNotBe(Condition.visible, Duration.ofSeconds(10));
+        cartBadge.shouldNot(Condition.exist, Duration.ofSeconds(10));
         return this;
     }
 

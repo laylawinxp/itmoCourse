@@ -1,5 +1,7 @@
 package org.example.tests;
 
+import org.example.tests.models.User;
+import org.example.tests.models.UserFactory;
 import org.example.tests.pages.LoginPage;
 import org.junit.jupiter.api.*;
 
@@ -14,8 +16,9 @@ public class LoginTest extends BaseTest {
     @DisplayName("Успешный логин")
     @Timeout(20)
     void userCanLoginSuccessfully() {
+        User user = UserFactory.standardUser();
         LoginPage.open()
-                .loginAs("standard_user", "secret_sauce")
+                .loginAs(user)
                 .shouldBeLoggedIn();
     }
 
@@ -23,10 +26,10 @@ public class LoginTest extends BaseTest {
     @DisplayName("Негативный логин: неверный пароль")
     void userCannotLoginWithWrongPassword() {
         LoginPage loginPage = LoginPage.open()
-                .loginAs("standard_user", "wrong_password");
+                .loginAs(UserFactory.standardUserWithWrongPass());
 
         assertAll(
-                () -> loginPage.checkErrorMessage("Epic sadface: Username and password do not match any user in this service\n"),
+                () -> loginPage.checkErrorMessage("Epic sadface: Username and password do not match any user in this service"),
                 () -> assertTrue(loginPage.getCurrentUrl().contains("saucedemo.com"), "URL не должен меняться")
         );
     }

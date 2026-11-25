@@ -1,5 +1,7 @@
 package org.example.tests;
 
+import org.example.tests.models.User;
+import org.example.tests.models.UserFactory;
 import org.example.tests.pages.LoginPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,8 +11,9 @@ public class ScenariosTest extends BaseTest {
     @Test
     @DisplayName("Успешное создание записи (добавление товара)")
     void userCanPublishPost() {
+        User user = UserFactory.standardUser();
         LoginPage.open()
-                .loginAs("standard_user", "secret_sauce")
+                .loginAs(user)
                 .shouldBeLoggedIn()
                 .addToCart("Sauce Labs Backpack")
                 .checkCartCount("1")
@@ -22,23 +25,25 @@ public class ScenariosTest extends BaseTest {
     @DisplayName("Попытка авторизации с неверным паролем (Негатив)")
     void userCannotLoginWithWrongPassword() {
         LoginPage.open()
-                .loginAs("standard_user", "wrong_password")
+                .loginAs(UserFactory.standardUserWithWrongPass())
                 .checkErrorMessage("Epic sadface: Username and password do not match any user in this service");
     }
 
     @Test
     @DisplayName("Проверка заблокированного пользователя")
     void lockedOutUserCannotLogin() {
+        User user = UserFactory.lockedUser();
         LoginPage.open()
-                .loginAs("locked_out_user", "secret_sauce")
+                .loginAs(user)
                 .checkErrorMessage("Epic sadface: Sorry, this user has been locked out.");
     }
 
     @Test
     @DisplayName("Добавление нескольких постов (товаров) в ленту (корзину)")
     void userCanAddMultiplePosts() {
+        User user = UserFactory.standardUser();
         LoginPage.open()
-                .loginAs("standard_user", "secret_sauce")
+                .loginAs(user)
                 .shouldBeLoggedIn()
                 .addToCart("Sauce Labs Backpack")
                 .addToCart("Sauce Labs Bike Light")

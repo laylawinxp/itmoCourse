@@ -1,10 +1,10 @@
 package org.example.tests;
 
+import org.example.tests.models.User;
+import org.example.tests.models.UserFactory;
 import org.example.tests.pages.InventoryPage;
 import org.example.tests.pages.LoginPage;
 import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Тесты корзины (Nested)")
 public class CartNestedTest extends BaseTest {
@@ -13,9 +13,11 @@ public class CartNestedTest extends BaseTest {
 
     @BeforeEach
     void loginBeforeEach() {
+        User user = UserFactory.standardUser();
         inventoryPage = LoginPage.open()
-                .loginAs("standard_user", "secret_sauce")
-                .shouldBeLoggedIn();
+                .loginAs(user)
+                .shouldBeLoggedIn()
+                .isLoaded();
     }
 
     @Nested
@@ -32,11 +34,10 @@ public class CartNestedTest extends BaseTest {
         @Test
         @DisplayName("Добавление нескольких товаров")
         void addMultipleItems() {
-            assertAll(
-                    () -> inventoryPage.addToCart("Sauce Labs Backpack"),
-                    () -> inventoryPage.addToCart("Sauce Labs Bike Light"),
-                    () -> inventoryPage.checkCartCount("2")
-            );
+            inventoryPage.addToCart("Sauce Labs Backpack")
+                    .checkCartCount("1")
+                    .addToCart("Sauce Labs Bike Light")
+                    .checkCartCount("2");
         }
     }
 
@@ -47,6 +48,7 @@ public class CartNestedTest extends BaseTest {
         @DisplayName("Удаление товара из корзины")
         void removeItem() {
             inventoryPage.addToCart("Sauce Labs Backpack")
+                    .checkCartCount("1")
                     .removeFromCart("Sauce Labs Backpack")
                     .checkCartIsEmpty();
         }
